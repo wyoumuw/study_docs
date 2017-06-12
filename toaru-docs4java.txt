@@ -1,0 +1,1 @@
+RedisTemplate:http://www.cnblogs.com/luochengqiuse/p/4638988.html
