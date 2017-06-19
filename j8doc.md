@@ -57,7 +57,10 @@
 * arr.stream().distinct() //去重，用老流生成一个没重复的新流
 * arr.stream().filter(predicate) //过滤 用老流生成一个predicate判断为true的所有元素的新流 断言为true的留下来
 * arr.stream().map(Function) //转型 用老流生成一个所有元素经过一元函数（Function）转型的新流 
-* arr.stream().flatMap(Function<t,stream>) //转型(一元流转换函数) 生成一个新流(S流)，老流的所有元素经过一元函数（Function<t,stream>)转换成一个流，并依次把内容流入开始生成的流(S流)里    例子：Arrays.asList(Arrays.asList(1,2,3,4,5),Arrays.asList(6,7,8,9,0)).stream().flatMap(list->list.stream()).forEach(i->System.out.print(i));
+* arr.stream().flatMap(Function<t,stream>) //转型(一元流转换函数) 生成一个新流(S流)，老流的所有元素经过一元函数（Function<t,stream>)转换成一个流，并依次把内容流入开始生成的流(S流)里    例子：
+
+Arrays.asList(Arrays.asList(1,2,3,4,5),Arrays.asList(6,7,8,9,0)).stream().flatMap(list->list.stream()).forEach(i->System.out.print(i));
+
 * arr.stream().peek(Consumer) //设置回调 用老流生成一个新流，并且接下来的遍历流的元素的时候每次都会调用一下回调(consumer)
 * arr.stream().limit(n) //截断流 用老流生成一个新流，且只取前n个，没那么长则全取
 * arr.stream().skip(n) //略过前n个，用老流生成一个新流，且略过前n个，没那么长则空流
