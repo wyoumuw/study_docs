@@ -67,11 +67,13 @@
 
 * arr.stream().collect(Collector) //收集，Collectors下定义的常量,也可以自定义Collector
 * arr.stream().collect(supplier,bconsumer1,bconsumer2) //收集，第一个是生产器，要生产一个用于返回的结果，第二个参数是添加器用于把流内容加入到返回结果，第三个参数是把另一个结果集的内容加入到此结果集，例子如下
+	
 	LinkedList<Integer> llist=arr.stream().collect(
 	()->new LinkedList<Integer>(),
 	(list,item)->list.add(item),
 	(list1,list2)->list1.addAll(list2)
 	);
+
 * arr.stream().reduce(BinaryOperator) //回归，两元一次函数,第一个参数是上次堆叠的结果（如果是第一次则为流的第一个元素，从第二个元素开始堆叠），第二个是这次堆叠的流元素，返回值为下一个堆叠的第一个参数
 * arr.stream().reduce(init,BinaryOperator) //类似于↑，不过堆叠内容从init开始，返回值直接为init的类型
 * arr.stream().count() //计算个数
