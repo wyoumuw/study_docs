@@ -1,1 +1,2 @@
 RedisTemplate:http://www.cnblogs.com/luochengqiuse/p/4638988.html
+java8 new Date api:http://www.blogjava.net/4cai/archive/2014/04/29/413041.html

@@ -4,6 +4,7 @@
 * 接口默认方法
 * lambda
 * stream
+* LocalDate
 * ...
 
 ### 接口静态方法
@@ -17,6 +18,36 @@
 	default void a{}
 	}
 ##### ps:多实现的时候如果都含有同一个函数则编译失败
+
+### MR Method Reference 方法引用过
+
+方法引用的3种写法
+* objectName::instanceMethod
+* ClassName::staticMethod
+* ClassName::instanceMethod ps:这个引用的方法为ClassName::instanceMethod(this,param),类似于生成了一个静态方法instanceMethod，然后实现为ClassA:instanceMethod((ClassA)thiz,param)->{thiz.instanceMethod(param)}
+##### ps：其实方法参数是这样的lambda Math::max等同于(x, y)->Math.max(x,y)
+
+补充上面的方法引用，官方给出一个排序的实例：
+
+	    public class Person{
+	        private final String firstName;
+	        private final String lastName;
+	        private final int age;
+    
+	        public Person(String fn, String ln, int a) {
+		        this.firstName = fn; this.lastName = ln; this.age = a;
+	        }
+
+	        public String getFirstName() { return firstName; }
+	        public String getLastName() { return lastName; }
+	        public int getAge() { return age; }
+	    }
+		
+	    arr.stream().sorted(Comparator.comparing(Person::getFirstName));//arr 是Person的List
+##### ps1: Comparator这个接口下的comparing这个默认方法可以把一个无参,返回值实现了Comparator的类方法引用（上述第三种）按照返回值的comparable生成comparator，参数写出来形式就是> T extends Comparable instanceMethod()的Class::instanceMethod引用。
+##### ps2: 笔者是根据这个方法分析出第三种方法其实是会生成一个带this的参数的结论的。
+##### ps3: 看comparing源码还发现了个有意思的东西是java8允许多转换比如class A implements Interface1,Interface2.则可以写成 (Interface1&Interface2)instance的强转形式，意味着instance这个类必须实现了Interface1并且实现了Interface2，上述的类A的实例a就可以写成Interface2 i2=(Interface1&Interface2)a;Interface1 i1=(Interface1&Interface2)a;可以参照comparing的源码
+##### ps4: 笔者以为lambda不会自动装箱的，不过从上面的实例发现会自动装箱（Integer.valueOf(getAge())）
 
 ### lambda
 
@@ -57,6 +88,9 @@
 * arr.stream().distinct() //去重，用老流生成一个没重复的新流
 * arr.stream().filter(predicate) //过滤 用老流生成一个predicate判断为true的所有元素的新流 断言为true的留下来
 * arr.stream().map(Function) //转型 用老流生成一个所有元素经过一元函数（Function）转型的新流 
+* arr.stream().mapToInt(Function) //转换成IntStream里面实现了一些int类型的回归方法，比如max就不用自己实现comparator了
+* arr.stream().mapToLong(Function) //转换成LongStream里面实现了一些long类型的回归方法，比如max就不用自己实现comparator了
+* arr.stream().mapToDouble(Function) //转换成DoubleStream里面实现了一些double类型的回归方法，比如max就不用自己实现comparator了
 * arr.stream().flatMap(Function<t,stream>) //转型(一元流转换函数) 生成一个新流(S流)，老流的所有元素经过一元函数（Function<t,stream>)转换成一个流，并依次把内容流入开始生成的流(S流)里    例子：
 
 	Arrays.asList(Arrays.asList(1,2,3,4,5),Arrays.asList(6,7,8,9,0)).stream().flatMap(list->list.stream()).forEach(i->System.out.print(i));
@@ -66,7 +100,7 @@
 * arr.stream().skip(n) //略过前n个，用老流生成一个新流，且略过前n个，没那么长则空流
 * arr.stream().sorted([comparator]) //用老流生成一个排序了的新流
 
-#### 回归
+#### 回归（结流）
 
 * arr.stream().collect(Collector) //收集，Collectors下定义的常量,也可以自定义Collector
 * arr.stream().collect(supplier,bconsumer1,bconsumer2) //收集，第一个是生产器，要生产一个用于返回的结果，第二个参数是添加器用于把流内容加入到返回结果，第三个参数是把另一个结果集的内容加入到此结果集，例子如下
@@ -86,10 +120,12 @@
 * arr.stream().allMatch(predicate) //是否流内所有元素都满足predicate
 * arr.stream().anyMatch(predicate) //是否流内任意元素满足predicate
 
-##### ps:
+##### ps:stream的回归一直从最开始进行遍历比如:Arrays.asList(1,2,3,4,5).stream().peek(i->System.out.print("["+i+"]")).skip(2).limit(1).forEach(i-> System.out.print(i+" "));输出为[1][2][3]3 ，可以从下图看流程：
+	{peek->skip}      {peek&forEach}   {limit trash rest}
+	 1        2             3          4 5
+	[1]      [2]          [3]3
 ###### java.util.Optional
 回归的时候有很多参数都是Optional类型的，这个类型是java为了防止空而做的处理，用get获取值，isPresent来判空
-
 
 
 
