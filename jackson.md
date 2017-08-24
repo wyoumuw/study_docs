@@ -130,6 +130,21 @@ Jackson定义了一组与序列化相关的功能（将Java对象编写为JSON�
 * INDENT_OUTPUT----默认是false,输出成多行(pretty-mode)
 * 
 
+
+### ps:
+JsonNode jsonNode=mapper.valueToTree(null);//jsonNode ==null
+JsonNode jsonNode=mapper.valueToTree(null);//如果SerializationFeature.FAIL_ON_EMPTY_BEANS是false则为{}，否则丢空指针
+
+
+
+### valueToTree 流程
+	ObjectMapper#writeValue(JsonGenerator, Object)
+	->ObjectMapper#_serializerProvider  ->   DefaultSerializerProvider#serializeValue(JsonGenerator,Object)
+	  ->
+
+
+
+
 	
 	
 	

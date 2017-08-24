@@ -1,2 +1,5 @@
 RedisTemplate:http://www.cnblogs.com/luochengqiuse/p/4638988.html
 java8 new Date api:http://www.blogjava.net/4cai/archive/2014/04/29/413041.html
+8大排序算法：http://blog.csdn.net/hguisu/article/details/7776068/
+hadoop:http://blog.csdn.net/sky786905664/article/details/51819759
+mock:http://liuzhijun.iteye.com/blog/1512780
