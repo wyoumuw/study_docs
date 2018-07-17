@@ -480,7 +480,7 @@ ps:mybatis-config.xml是配置mybatis的一些属性的，具体参考：http://
         //UserMapper.java
         public interface UserMapper{
             //第一个参数是sql的提供类，method是用这个类下的这个方法来提供sql
-            @SelectSelectProvider(type=UserMapperProvider.class,method="get")
+            @SelectProvider(type=UserMapperProvider.class,method="get")
             //自动映射
             User get(@Param("id") Integer id);
         }
